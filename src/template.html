@@ -1,0 +1,1611 @@
+<title>ちい活マップ</title>
+<meta name="description" content="ちいかわのお店・カフェ・期間限定イベントを、日本・韓国・台湾・中国の地図で探せる非公式ファンまとめ。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ちい活マップ">
+<meta property="og:description" content="ちいかわのお店・カフェ・期間限定イベントを地図で探せる非公式ファンまとめ。行ったところにスタンプを押せます。">
+<meta property="og:url" content="https://mayuko9775orz-wq.github.io/chiikatsu-map/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12.5' fill='%23E8829E' stroke='%233A3342' stroke-width='3'/%3E%3Ccircle cx='12' cy='12' r='3' fill='%23fff' opacity='.8'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yusei+Magic&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+<style>
+/* Layout: masthead + stamp card, country tabs, then a sticky manga-panel map beside a region-grouped spot list; one column under 900px */
+:root {
+  --paper: #F4F5F9;
+  --card: #FFFFFF;
+  --ink: #3A3342;
+  --ink-soft: #6C6476;
+  --line: #E3DFE9;
+  --line-strong: #CBC5D3;
+  --sea: #D8E7F2;
+  --sea-halo: #D8E7F2;
+  --land: #FFFFFF;
+  --land-off: #ECEFF3;
+  --land-hit: #FCE3EA;
+  --coast: #3A3342;
+  --coast-off: #B8BEC8;
+  --pref-line: #B9B2C4;
+  --accent: #E8829E;
+  --on-accent: #2A2330;
+  --stamp-edge: #C2557A;
+  --shop: #EE8EA8;
+  --food: #F2C94C;
+  --facility: #79B4E0;
+  --limited: #84CE9E;
+  --pin-line: #2B2531;
+  --shine: #FFFFFF;
+  --live-bg: #DDF3E5;
+  --soon-bg: #FBEFC6;
+  --focus: #3F7CC0;
+  --shadow: 0 1px 0 rgba(58, 51, 66, .06), 0 10px 28px -14px rgba(58, 51, 66, .45);
+  --font-display: "Yusei Magic", "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+  --font-body: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14171E; --card: #1E2330; --ink: #EDE9F2; --ink-soft: #A9A2B5; --line: #303646; --line-strong: #474E61;
+    --sea: #172230; --sea-halo: #172230; --land: #2C3343; --land-off: #20262F; --land-hit: #4A3040;
+    --coast: #B3ABC2; --coast-off: #39404E; --pref-line: #4E5568;
+    --accent: #EA8AA4; --on-accent: #221C27; --stamp-edge: #F4B4C6;
+    --shop: #EA8AA4; --food: #E6BF48; --facility: #6EA8D8; --limited: #77C493;
+    --pin-line: #120F16; --shine: #FFFFFF; --live-bg: #1F3A2B; --soon-bg: #3B3320; --focus: #86B4EA;
+    --shadow: 0 1px 0 rgba(0, 0, 0, .3), 0 12px 30px -14px rgba(0, 0, 0, .7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14171E; --card: #1E2330; --ink: #EDE9F2; --ink-soft: #A9A2B5; --line: #303646; --line-strong: #474E61;
+  --sea: #172230; --sea-halo: #172230; --land: #2C3343; --land-off: #20262F; --land-hit: #4A3040;
+  --coast: #B3ABC2; --coast-off: #39404E; --pref-line: #4E5568;
+  --accent: #EA8AA4; --on-accent: #221C27; --stamp-edge: #F4B4C6;
+  --shop: #EA8AA4; --food: #E6BF48; --facility: #6EA8D8; --limited: #77C493;
+  --pin-line: #120F16; --shine: #FFFFFF; --live-bg: #1F3A2B; --soon-bg: #3B3320; --focus: #86B4EA;
+  --shadow: 0 1px 0 rgba(0, 0, 0, .3), 0 12px 30px -14px rgba(0, 0, 0, .7);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-text-size-adjust: 100%;
+}
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+[data-cat="shop"] { --c: var(--shop); }
+[data-cat="food"] { --c: var(--food); }
+[data-cat="facility"] { --c: var(--facility); }
+[data-cat="limited"] { --c: var(--limited); }
+.dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--c, var(--line-strong));
+  border: 1.5px solid var(--pin-line);
+  flex: none;
+}
+
+.page {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: clamp(16px, 3vw, 32px);
+  padding-block: 20px 40px;
+}
+
+/* masthead */
+.masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  gap: 20px 40px;
+  align-items: end;
+}
+.eyebrow {
+  margin: 0 0 6px;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  color: var(--ink-soft);
+}
+h1 {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding-bottom: 12px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 7vw, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: .03em;
+}
+h1::after {
+  content: "";
+  position: absolute;
+  left: 4px; right: 4px; bottom: 0;
+  height: 10px;
+  background: var(--accent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 10'%3E%3Cpath d='M2 6 Q 8 1 14 5 T 26 5 T 38 5 T 47 5' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 0 / 48px 10px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 10'%3E%3Cpath d='M2 6 Q 8 1 14 5 T 26 5 T 38 5 T 47 5' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 0 / 48px 10px;
+}
+.lede {
+  max-width: 36em;
+  margin: 14px 0 0;
+  font-size: 1rem;
+  text-wrap: pretty;
+}
+
+.stampcard {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  padding: 14px 16px 12px;
+}
+.stampcard-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.stampcard h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.12rem;
+}
+.stampcard h2 span { font-family: var(--font-body); font-size: .85rem; color: var(--ink-soft); font-weight: 700; }
+.stamp-score {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.stamp-score b {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.7rem;
+  color: var(--ink);
+  margin-right: 4px;
+}
+.stamps {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.st {
+  width: 17px; height: 17px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--line-strong);
+}
+.st.is-on {
+  background: var(--accent);
+  border: 1.5px solid var(--stamp-edge);
+}
+.stamp-note {
+  margin: 10px 0 0;
+  font-size: .76rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* country tabs */
+.countries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+.tab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 7px 18px 8px;
+  border: 2px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.tab:hover { border-color: var(--ink); }
+.tab[aria-selected="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.tab-name { font-family: var(--font-display); font-size: 1.1rem; }
+.tab-count { font-size: .78rem; font-weight: 700; opacity: .72; font-variant-numeric: tabular-nums; }
+
+/* layout */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  margin-top: 14px;
+}
+
+/* map */
+.map-panel {
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  height: calc(100vh - 24px);
+  max-height: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.map {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: var(--sea);
+  border: 2.5px solid var(--ink);
+  border-radius: 8px;
+  overflow: hidden;
+}
+#mapSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+}
+#mapSvg:active { cursor: grabbing; }
+.map-hint { margin: 0 2px; font-size: .75rem; color: var(--ink-soft); }
+
+.land-bg { fill: var(--land-off); stroke: var(--coast-off); stroke-width: .8; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.under { fill: var(--coast-off); stroke: var(--coast-off); stroke-width: 2.8; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.land-t, .pref { fill: var(--land-off); stroke: var(--pref-line); stroke-width: .7; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+#mapSvg[data-country="JP"] .under[data-land="JP"],
+#mapSvg[data-country="KR"] .under[data-land="KR"],
+#mapSvg[data-country="TW"] .under[data-land="TW"],
+#mapSvg[data-country="CN"] .under[data-land="CN"] { fill: var(--coast); stroke: var(--coast); }
+#mapSvg[data-country="JP"] .pref,
+#mapSvg[data-country="KR"] .land-t[data-land="KR"],
+#mapSvg[data-country="TW"] .land-t[data-land="TW"],
+#mapSvg[data-country="CN"] .land-t[data-land="CN"],
+#mapSvg[data-country="CN"] .land-t[data-land="HK"],
+#mapSvg[data-country="CN"] .land-t[data-land="MO"] { fill: var(--land); }
+#mapSvg[data-country="JP"] .pref.has-spots { fill: var(--land-hit); }
+
+.city circle { fill: var(--ink-soft); }
+.city text {
+  font: 500 11px var(--font-body);
+  fill: var(--ink-soft);
+  paint-order: stroke;
+  stroke: var(--sea-halo);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.pin, .cluster { cursor: pointer; outline: none; }
+.hit { fill: transparent; }
+.pin .body { fill: var(--c); stroke: var(--pin-line); stroke-width: 2.2; }
+.pin .shine { fill: var(--shine); opacity: .75; }
+.pin .tick { fill: none; stroke: var(--pin-line); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.pin .ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse 1.8s ease-out infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(.7); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+.pin-label {
+  font: 700 13px var(--font-body);
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: var(--card);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.cluster .disc { fill: var(--card); stroke: var(--pin-line); stroke-width: 2; }
+.cluster .seg { fill: none; stroke: var(--c); stroke-width: 4.5; }
+.cluster text {
+  font: 700 12px var(--font-body);
+  fill: var(--ink);
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-variant-numeric: tabular-nums;
+}
+.pin:focus-visible .body, .cluster:focus-visible .disc { stroke: var(--focus); stroke-width: 3.5; }
+
+.legend {
+  position: absolute;
+  top: 10px; left: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  max-width: calc(100% - 76px);
+  margin: 0;
+  padding: 5px 12px;
+  list-style: none;
+  background: var(--card);
+  border: 1.5px solid var(--line-strong);
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.legend li { display: inline-flex; align-items: center; gap: 5px; }
+.legend .dot { width: 9px; height: 9px; }
+
+.map-tools {
+  position: absolute;
+  top: 10px; right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.map-tools button {
+  width: 38px; height: 38px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--ink);
+  font: 700 19px/1 var(--font-body);
+  cursor: pointer;
+}
+.map-tools .wide { width: auto; height: 32px; padding: 0 11px; border-radius: 999px; font-size: 12px; }
+.map-tools button:hover { background: var(--land-hit); }
+
+.popup {
+  position: absolute;
+  left: 10px; right: 10px; bottom: 10px;
+  max-width: 390px;
+  max-height: 62%;
+  overflow: auto;
+  padding: 12px 14px 14px;
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+.popup-close {
+  float: right;
+  width: 30px; height: 30px;
+  margin: -4px -6px 0 8px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-soft);
+  font: 700 20px/1 var(--font-body);
+  cursor: pointer;
+}
+.popup-close:hover { background: var(--line); color: var(--ink); }
+.popup-name { margin: 6px 0 0; font-weight: 700; font-size: 1.02rem; line-height: 1.45; }
+.popup-sub { margin: 2px 0 0; font-size: .84rem; color: var(--ink-soft); }
+.popup-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; }
+.popup-list button {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 500 .9rem/1.4 var(--font-body);
+  text-align: left;
+  cursor: pointer;
+}
+.popup-list button:hover { border-color: var(--ink); }
+
+/* list */
+.filters {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+}
+.search input {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+.search input::placeholder { color: var(--ink-soft); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font: 700 .84rem/1.5 var(--font-body);
+  cursor: pointer;
+}
+.chip:hover { border-color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.chip-n { font-size: .74rem; opacity: .72; font-variant-numeric: tabular-nums; }
+.chip.is-empty { opacity: .5; }
+.filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.filter-row select {
+  padding: 6px 12px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font: 500 .88rem var(--font-body);
+}
+.toggle { display: inline-flex; align-items: center; gap: 7px; font-size: .88rem; cursor: pointer; }
+.toggle input { width: 17px; height: 17px; accent-color: var(--accent); margin: 0; }
+
+.result { margin: 16px 4px 0; font-size: .85rem; color: var(--ink-soft); }
+.group { display: grid; gap: 10px; margin-top: 18px; }
+.group-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 4px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.32rem;
+}
+.group-n { font-family: var(--font-body); font-size: .8rem; font-weight: 700; color: var(--ink-soft); }
+
+.spot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  padding: 16px 16px 14px 18px;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  scroll-margin: 24px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.spot.is-selected { border-color: var(--ink); box-shadow: 0 0 0 4px var(--land-hit); }
+.spot[data-state="ended"] { opacity: .68; }
+.spot-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 1px 10px 1px 7px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  font-size: .76rem;
+  font-weight: 700;
+}
+.status {
+  padding: 1px 10px;
+  border-radius: 999px;
+  font-size: .76rem;
+  font-weight: 700;
+  background: var(--line);
+  color: var(--ink-soft);
+}
+.status[data-state="live"] { background: var(--live-bg); color: var(--ink); }
+.status[data-state="soon"] { background: var(--soon-bg); color: var(--ink); }
+.where { font-size: .78rem; color: var(--ink-soft); font-weight: 700; }
+.spot-name { margin: 6px 0 0; font-size: 1.12rem; line-height: 1.45; text-wrap: balance; }
+.spot-local { margin: 0; font-size: .82rem; color: var(--ink-soft); }
+.facts {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 2px 10px;
+  margin: 8px 0 0;
+  font-size: .9rem;
+}
+.facts dt { padding-top: 2px; font-size: .74rem; font-weight: 700; letter-spacing: .08em; color: var(--ink-soft); }
+.facts dd { margin: 0; overflow-wrap: anywhere; }
+.highlights { margin: 8px 0 0; font-size: .92rem; text-wrap: pretty; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.act {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: 700 .8rem/1.4 var(--font-body);
+  text-decoration: none;
+  cursor: pointer;
+}
+.act:hover { border-color: var(--ink); background: var(--paper); }
+.act.is-off { border-style: dashed; color: var(--ink-soft); cursor: default; font-weight: 500; }
+.act[aria-pressed="true"] { background: var(--land-hit); border-color: var(--accent); }
+.act.primary { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.act.primary:hover { background: var(--ink); opacity: .88; }
+
+/* Google Maps export */
+.gm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding-top: 10px;
+  border-top: 1.5px dashed var(--line);
+  font-size: .84rem;
+}
+.gm-title { font-weight: 700; }
+.gm details { flex-basis: 100%; color: var(--ink-soft); }
+.gm summary { width: fit-content; font-weight: 700; color: var(--ink); cursor: pointer; }
+.gm ol { display: grid; gap: 2px; margin: 6px 0 0; padding-left: 1.4em; line-height: 1.6; }
+
+/* route tray */
+.route {
+  position: fixed;
+  left: 12px; right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+  max-width: 560px;
+  max-height: min(72vh, 580px);
+  margin: 0 auto;
+  overflow: auto;
+  padding: 10px 12px 12px;
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+.route-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.route-title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 1.08rem; }
+.route-count { font-size: .8rem; font-weight: 700; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.route-head .spacer { flex: 1; }
+.route-stops { display: grid; margin: 10px 0 0; padding: 0; list-style: none; }
+.route-stop {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+}
+.route-num {
+  display: grid;
+  place-items: center;
+  width: 24px; height: 24px;
+  border: 2px solid var(--pin-line);
+  border-radius: 50%;
+  background: var(--c);
+  color: var(--on-accent);
+  font: 700 12px/1 var(--font-body);
+}
+.route-name { font-size: .9rem; font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+.route-name small { display: block; font-size: .74rem; font-weight: 500; color: var(--ink-soft); }
+.route-ops { display: flex; gap: 2px; }
+.icon-btn {
+  width: 30px; height: 30px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  font: 700 14px/1 var(--font-body);
+  cursor: pointer;
+}
+.icon-btn:disabled { opacity: .35; cursor: default; }
+.route-leg { margin-left: 11px; padding: 1px 0 1px 20px; border-left: 2px dotted var(--line-strong); font-size: .78rem; }
+.route-leg a { font-weight: 700; color: var(--ink-soft); }
+.route-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1.5px dashed var(--line);
+}
+.seg { display: inline-flex; overflow: hidden; border: 1.5px solid var(--line-strong); border-radius: 999px; }
+.seg button { padding: 6px 13px; border: 0; background: transparent; color: var(--ink); font: 700 .8rem/1.2 var(--font-body); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.route-note { flex-basis: 100%; margin: 0; font-size: .74rem; line-height: 1.55; color: var(--ink-soft); }
+body.has-route .page { padding-bottom: 150px; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  max-width: calc(100% - 32px);
+  padding: 8px 18px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: .85rem;
+  font-weight: 700;
+}
+.note { margin: 10px 0 0; font-size: .74rem; color: var(--ink-soft); line-height: 1.5; }
+
+.stamp {
+  display: grid;
+  place-items: center;
+  align-self: start;
+  width: 62px; height: 62px;
+  border: 2px dashed var(--line-strong);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-soft);
+  font: 400 14px/1.1 var(--font-display);
+  cursor: pointer;
+}
+.stamp:hover { border-color: var(--accent); color: var(--ink); }
+.stamp[aria-pressed="true"] {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 2.5px solid var(--stamp-edge);
+  background: var(--accent);
+  color: var(--on-accent);
+  transform: rotate(-9deg);
+}
+.stamp-mark { font-size: 25px; line-height: 1; }
+.stamp-date { margin-top: 2px; font: 700 10px/1 var(--font-body); font-variant-numeric: tabular-nums; }
+.stamp.just-pressed { animation: press .3s cubic-bezier(.2, .9, .3, 1.3); }
+@keyframes press {
+  0% { transform: scale(1.4) rotate(-9deg); opacity: .3; }
+  100% { transform: scale(1) rotate(-9deg); opacity: 1; }
+}
+
+.empty {
+  margin-top: 18px;
+  padding: 28px 18px;
+  border: 2px dashed var(--line-strong);
+  border-radius: 18px;
+  text-align: center;
+  color: var(--ink-soft);
+}
+.empty p { margin: 0 0 12px; }
+.ended-toggle {
+  margin: 18px auto 0;
+  display: block;
+  padding: 8px 18px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: 700 .85rem var(--font-body);
+  cursor: pointer;
+}
+.ended-toggle:hover { border-color: var(--ink); color: var(--ink); }
+
+/* footer */
+.colophon {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 18px 28px;
+  margin-top: 56px;
+  padding-top: 22px;
+  border-top: 2px dashed var(--line-strong);
+  font-size: .82rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+.colophon h2 { margin: 0 0 4px; font-size: .9rem; color: var(--ink); }
+.colophon p { margin: 0; }
+
+@media (max-width: 899px) {
+  .masthead { grid-template-columns: minmax(0, 1fr); }
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .map-panel { position: relative; top: auto; height: min(62vh, 560px); min-height: 320px; }
+}
+@media (max-width: 480px) {
+  .spot { grid-template-columns: minmax(0, 1fr); }
+  .stamp { position: absolute; right: 14px; top: 14px; width: 54px; height: 54px; }
+  .spot { position: relative; }
+  .spot-meta { padding-right: 64px; }
+  .spot-name { padding-right: 52px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pin .ring { animation: none; opacity: .8; }
+  .stamp.just-pressed { animation: none; }
+  .spot { transition: none; }
+}
+</style>
+<!--BODY-->
+<div class="page">
+  <header class="masthead">
+    <div class="brand">
+      <p class="eyebrow">非公式ファンまとめ</p>
+      <h1>ちい活マップ</h1>
+      <p class="lede">ちいかわのお店、カフェ、期間限定のイベントを地図で探せます。行ったところで「行った」を押すと、スタンプがたまっていきます。</p>
+    </div>
+    <section class="stampcard" aria-labelledby="stampTitle">
+      <div class="stampcard-head">
+        <h2 id="stampTitle">ちい活スタンプ <span id="stampCountry"></span></h2>
+        <p class="stamp-score"><b id="visitedCount">0</b>/ <span id="stampTotal">0</span></p>
+      </div>
+      <ol class="stamps" id="stamps" aria-hidden="true"></ol>
+      <p class="stamp-note" id="stampNote">記録はこのブラウザだけに保存されます。</p>
+    </section>
+  </header>
+
+  <nav class="countries" id="countryTabs" role="tablist" aria-label="国・地域"></nav>
+
+  <div class="layout">
+    <section class="map-panel" id="mapPanel" aria-label="地図">
+      <div class="map" id="map">
+        <svg id="mapSvg" preserveAspectRatio="xMidYMid slice" role="group" aria-label="スポットの地図"></svg>
+        <ul class="legend" aria-hidden="true">
+          <li data-cat="shop"><span class="dot"></span>ショップ</li>
+          <li data-cat="food"><span class="dot"></span>フード</li>
+          <li data-cat="facility"><span class="dot"></span>施設</li>
+          <li data-cat="limited"><span class="dot"></span>期間限定</li>
+        </ul>
+        <div class="map-tools">
+          <button type="button" id="zoomIn" aria-label="拡大">+</button>
+          <button type="button" id="zoomOut" aria-label="縮小">−</button>
+          <button type="button" id="zoomReset" class="wide">全体</button>
+        </div>
+        <div class="popup" id="popup" hidden></div>
+      </div>
+      <p class="map-hint">ピンを押すと詳細が出ます。数字の丸は、近くにまとまったスポットです。</p>
+    </section>
+
+    <section class="list-panel" aria-label="スポット一覧">
+      <div class="filters">
+        <label class="search" for="q"><span class="visually-hidden">検索</span>
+          <input id="q" type="search" placeholder="店名・エリア・グッズで探す" autocomplete="off">
+        </label>
+        <div class="chips" id="catChips" role="group" aria-label="種類でしぼる"></div>
+        <div class="filter-row">
+          <label for="region"><span class="visually-hidden">エリア</span><select id="region"></select></label>
+          <label class="toggle" for="unvisited"><input type="checkbox" id="unvisited"><span>まだ行ってないところだけ</span></label>
+        </div>
+        <div class="gm">
+          <span class="gm-title">Googleマップ連携</span>
+          <button type="button" class="act" id="saveCsv">表示中のスポットを保存（マイマップ用）</button>
+          <details>
+            <summary>Googleマップへの取り込み方</summary>
+            <ol>
+              <li>上のボタンで、いま一覧に出ているスポットをファイル（CSV）に保存します。</li>
+              <li>パソコンで <a href="https://www.google.com/mymaps" target="_blank" rel="noopener">Googleマイマップ</a> を開き、「新しい地図を作成」→「インポート」で保存したファイルを選びます。</li>
+              <li>目印の位置には「緯度」と「経度」、タイトルには「名前」を選びます。「スタイル」で「種類」を選ぶと、色分けできます。</li>
+              <li>スマホの Googleマップ アプリでは「保存済み」→「マイマップ」から見られます。</li>
+            </ol>
+          </details>
+        </div>
+      </div>
+      <p class="result" id="result" aria-live="polite"></p>
+      <div id="list"></div>
+      <button type="button" class="ended-toggle" id="endedToggle" hidden></button>
+    </section>
+  </div>
+
+  <footer class="colophon">
+    __FOOTER__
+  </footer>
+</div>
+<aside class="route" id="route" aria-label="ちい活ルート" hidden></aside>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(() => {
+  const MAP = __MAP_JSON__;
+  const SPOTS = __SPOTS_JSON__;
+
+  document.documentElement.lang = 'ja';
+  const NS = 'http://www.w3.org/2000/svg';
+  const W = MAP.w, H = MAP.h, KMAX = 120, CLUSTER_PX = 26;
+  const hasD3 = !!window.d3;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const CATS = {
+    shop: { label: 'ショップ' },
+    food: { label: 'フード' },
+    facility: { label: '施設' },
+    limited: { label: '期間限定' },
+  };
+  const COUNTRIES = [
+    { code: 'JP', label: '日本', view: [122.9, 24.0, 146.2, 45.6] },
+    { code: 'KR', label: '韓国', view: [124.6, 33.1, 130.9, 38.65] },
+    { code: 'TW', label: '台湾', view: [119.3, 21.85, 122.1, 25.35] },
+    { code: 'CN', label: '中国', view: [100.0, 18.2, 126.0, 42.5] },
+  ];
+  const JP_REGIONS = [
+    ['北海道・東北', ['北海道', '青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県']],
+    ['関東', ['茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県']],
+    ['中部', ['新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県']],
+    ['近畿', ['三重県', '滋賀県', '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県']],
+    ['中国地方・四国', ['鳥取県', '島根県', '岡山県', '広島県', '山口県', '徳島県', '香川県', '愛媛県', '高知県']],
+    ['九州・沖縄', ['福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県']],
+  ];
+  // orientation labels for the overseas maps: [name, lon, lat, tier]
+  const CITIES = [
+    ['ソウル', 126.978, 37.566, 1], ['釜山', 129.075, 35.180, 2], ['仁川', 126.705, 37.456, 3], ['大邱', 128.601, 35.871, 3],
+    ['台北', 121.565, 25.033, 1], ['台中', 120.674, 24.148, 2], ['高雄', 120.302, 22.627, 2], ['台南', 120.213, 22.999, 3],
+    ['北京', 116.407, 39.904, 1], ['上海', 121.474, 31.230, 1], ['香港', 114.169, 22.319, 1], ['広州', 113.264, 23.129, 2],
+    ['成都', 104.066, 30.573, 2], ['深圳', 114.058, 22.543, 3], ['重慶', 106.551, 29.563, 3], ['杭州', 120.155, 30.274, 3],
+    ['南京', 118.797, 32.060, 3], ['武漢', 114.305, 30.593, 3], ['天津', 117.201, 39.084, 3], ['西安', 108.940, 34.341, 3],
+    ['三亜', 109.512, 18.253, 2],
+  ];
+  const CAT_ORDER = ['shop', 'food', 'facility', 'limited'];
+  const PREF_ORDER = JP_REGIONS.flatMap(r => r[1]);
+  const PREF_REGION = Object.fromEntries(JP_REGIONS.flatMap(([r, ps]) => ps.map(p => [p, r])));
+
+  /* ---------- helpers ---------- */
+  const $ = id => document.getElementById(id);
+  function h(tag, attrs = {}, children = []) {
+    const el = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v == null || v === false) continue;
+      if (k === 'class') el.className = v;
+      else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v === true ? '' : v);
+    }
+    for (const c of [children].flat(Infinity)) {
+      if (c == null || c === false || c === '') continue;
+      el.append(c instanceof Node ? c : document.createTextNode(String(c)));
+    }
+    return el;
+  }
+  function svgEl(tag, attrs = {}, text) {
+    const el = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) if (v != null) el.setAttribute(k, v);
+    if (text != null) el.textContent = text;
+    return el;
+  }
+  const store = {
+    get(key, fallback) {
+      try { const v = localStorage.getItem(key); return v == null ? fallback : JSON.parse(v); } catch (e) { return fallback; }
+    },
+    set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* storage unavailable */ } },
+  };
+  const pad2 = n => String(n).padStart(2, '0');
+  const now = new Date();
+  const TODAY = `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())}`;
+  function md(iso) {
+    const [y, m, d] = iso.split('-');
+    return +y === now.getFullYear() ? `${+m}/${+d}` : `${y}/${+m}/${+d}`;
+  }
+  function fullDate(iso) {
+    const [y, m, d] = iso.split('-');
+    return `${y}年${+m}月${+d}日`;
+  }
+  function project(lon, lat) {
+    const my = Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360)) * 180 / Math.PI;
+    return [(lon - MAP.lonW) * MAP.k, (MAP.my0 - my) * MAP.k];
+  }
+  const avg = a => a.reduce((x, y) => x + y, 0) / (a.length || 1);
+
+  /* ---------- data ---------- */
+  function eventState(s) {
+    if (s.endDate && s.endDate < TODAY) return 'ended';
+    if (s.startDate && s.startDate > TODAY) return 'soon';
+    return s.category === 'limited' ? 'live' : null;
+  }
+  function eventLabel(s) {
+    if (s.state === 'ended') return '終了';
+    if (s.state === 'soon') return s.category === 'limited' ? `${md(s.startDate)}から` : `${md(s.startDate)}オープン予定`;
+    return s.endDate ? `開催中・${md(s.endDate)}まで` : '開催中';
+  }
+  const byId = {};
+  SPOTS.forEach(s => {
+    s.country = s.country || 'JP';
+    s.xy = (typeof s.lat === 'number' && typeof s.lng === 'number') ? project(s.lng, s.lat) : null;
+    s.state = eventState(s);
+    s.region = s.country === 'JP' ? (PREF_REGION[s.pref] || 'その他') : (s.pref || 'その他');
+    s.hay = [s.name, s.nameLocal, s.pref, s.area, s.place, s.highlights, CATS[s.category] && CATS[s.category].label]
+      .filter(Boolean).join(' ').toLowerCase();
+    byId[s.id] = s;
+  });
+  function sortKey(s) {
+    const pref = s.country === 'JP' ? PREF_ORDER.indexOf(s.pref) : 0;
+    return [s.state === 'ended' ? 1 : 0, pref, CAT_ORDER.indexOf(s.category), s.startDate || '', s.name];
+  }
+  function cmp(a, b) {
+    const ka = sortKey(a), kb = sortKey(b);
+    for (let i = 0; i < ka.length; i++) {
+      if (ka[i] < kb[i]) return -1;
+      if (ka[i] > kb[i]) return 1;
+    }
+    return 0;
+  }
+  function regionsFor(code) {
+    const list = SPOTS.filter(s => s.country === code);
+    if (code === 'JP') {
+      const names = JP_REGIONS.map(r => r[0]).filter(r => list.some(s => s.region === r));
+      if (list.some(s => s.region === 'その他')) names.push('その他');
+      return names;
+    }
+    const lats = {};
+    list.forEach(s => { (lats[s.region] = lats[s.region] || []).push(typeof s.lat === 'number' ? s.lat : 0); });
+    return Object.keys(lats).sort((a, b) => avg(lats[b]) - avg(lats[a]));
+  }
+
+  /* ---------- state ---------- */
+  let visited = store.get('chiikatsu:visited', {});
+  if (!visited || typeof visited !== 'object') visited = {};
+  const state = { country: 'JP', cat: 'all', region: 'all', q: '', unvisited: false, showEnded: false, selected: null };
+  let visibleSpots = [];
+
+  function matches(s, opts = {}) {
+    if (s.country !== state.country) return false;
+    if (!state.showEnded && s.state === 'ended') return false;
+    if (!opts.ignoreCat && state.cat !== 'all' && s.category !== state.cat) return false;
+    if (state.region !== 'all' && s.region !== state.region) return false;
+    if (state.unvisited && visited[s.id]) return false;
+    if (state.q) {
+      const terms = state.q.toLowerCase().split(/\s+/).filter(Boolean);
+      if (!terms.every(t => s.hay.includes(t))) return false;
+    }
+    return true;
+  }
+
+  /* ---------- country tabs ---------- */
+  const tabs = $('countryTabs');
+  function renderTabs() {
+    tabs.replaceChildren(...COUNTRIES.map(c => {
+      const n = SPOTS.filter(s => s.country === c.code && s.state !== 'ended').length;
+      const on = c.code === state.country;
+      return h('button', {
+        type: 'button', role: 'tab', class: 'tab', id: 'tab-' + c.code,
+        'aria-selected': String(on), tabindex: on ? '0' : '-1',
+        onclick: () => setCountry(c.code),
+      }, [h('span', { class: 'tab-name' }, c.label), h('span', { class: 'tab-count' }, `${n}か所`)]);
+    }));
+  }
+  tabs.addEventListener('keydown', e => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    const i = COUNTRIES.findIndex(c => c.code === state.country);
+    const next = COUNTRIES[(i + (e.key === 'ArrowRight' ? 1 : COUNTRIES.length - 1)) % COUNTRIES.length];
+    setCountry(next.code);
+    $('tab-' + next.code).focus();
+  });
+
+  /* ---------- filters ---------- */
+  const chips = $('catChips');
+  function renderChips() {
+    const base = SPOTS.filter(s => matches(s, { ignoreCat: true }));
+    chips.replaceChildren(...[['all', 'すべて'], ...CAT_ORDER.map(k => [k, CATS[k].label])].map(([k, label]) => {
+      const n = k === 'all' ? base.length : base.filter(s => s.category === k).length;
+      return h('button', {
+        type: 'button', class: 'chip' + (n === 0 ? ' is-empty' : ''), 'data-cat': k === 'all' ? null : k,
+        'aria-pressed': String(state.cat === k),
+        onclick: () => { state.cat = k; update(); },
+      }, [k !== 'all' ? h('span', { class: 'dot', 'aria-hidden': 'true' }) : null, label, h('span', { class: 'chip-n' }, n)]);
+    }));
+  }
+  const regionSel = $('region');
+  function renderRegionSelect() {
+    const opts = regionsFor(state.country);
+    if (state.region !== 'all' && !opts.includes(state.region)) state.region = 'all';
+    regionSel.replaceChildren(new Option(state.country === 'JP' ? 'すべての地方' : 'すべての都市', 'all'), ...opts.map(r => new Option(r, r)));
+    regionSel.value = state.region;
+  }
+  regionSel.addEventListener('change', () => {
+    state.region = regionSel.value;
+    update();
+    if (state.region === 'all') flyTo(viewTransform(countryView(state.country)));
+    else fitSpots(visibleSpots);
+  });
+  let qTimer;
+  $('q').addEventListener('input', e => {
+    clearTimeout(qTimer);
+    qTimer = setTimeout(() => { state.q = e.target.value.trim(); update(); }, 140);
+  });
+  $('unvisited').addEventListener('change', e => { state.unvisited = e.target.checked; update(); });
+  $('endedToggle').addEventListener('click', () => { state.showEnded = !state.showEnded; update(); });
+  function resetFilters() {
+    state.cat = 'all'; state.region = 'all'; state.q = ''; state.unvisited = false;
+    $('q').value = ''; $('unvisited').checked = false; regionSel.value = 'all';
+    update();
+  }
+
+  /* ---------- list ---------- */
+  const list = $('list');
+  function gmap(s) {
+    const q = s.country === 'JP'
+      ? [s.name, s.place].filter(Boolean).join(' ')
+      : [s.nameLocal || s.name, s.address].filter(Boolean).join(' ');
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+  }
+  // Japanese addresses route reliably; overseas addresses carry notes, so use the coordinates
+  function gmPlace(s) {
+    if (s.country === 'JP' && s.address) return s.address.replace(/^〒\s*\d{3}-?\d{4}\s*/, '');
+    if (typeof s.lat === 'number') return `${s.lat},${s.lng}`;
+    return [s.nameLocal || s.name, s.address].filter(Boolean).join(' ');
+  }
+  function dirUrl(stops, mode, fromHere) {
+    const pts = stops.map(gmPlace);
+    const p = new URLSearchParams({ api: '1' });
+    if (!fromHere && pts.length > 1) p.set('origin', pts.shift());
+    p.set('destination', pts.pop());
+    if (pts.length) p.set('waypoints', pts.join('|'));
+    if (mode) p.set('travelmode', mode);
+    return 'https://www.google.com/maps/dir/?' + p;
+  }
+  function outLink(href, label) {
+    return h('a', { class: 'act', href, target: '_blank', rel: 'noopener' }, label);
+  }
+  function langOf(s) {
+    if (s.country === 'KR') return 'ko';
+    if (s.country === 'TW' || s.pref === '香港' || s.pref === 'マカオ') return 'zh-Hant';
+    return 'zh-Hans';
+  }
+  function tag(s) {
+    return h('span', { class: 'tag', 'data-cat': s.category }, [h('span', { class: 'dot', 'aria-hidden': 'true' }), CATS[s.category].label]);
+  }
+  function statusChip(s) {
+    return s.state ? h('span', { class: 'status', 'data-state': s.state }, eventLabel(s)) : null;
+  }
+  function stampButton(s) {
+    const v = visited[s.id];
+    return h('button', {
+      type: 'button', class: 'stamp', 'aria-pressed': String(!!v),
+      'aria-label': v ? `${s.name}：${fullDate(v)}に行った。押すと取り消します` : `${s.name}に行ったら押す`,
+      onclick: () => toggleVisited(s.id),
+    }, v ? [h('span', { class: 'stamp-mark' }, '済'), h('span', { class: 'stamp-date' }, md(v))] : h('span', {}, '行った'));
+  }
+  function card(s) {
+    const facts = [];
+    if (s.place || s.area) facts.push(h('dt', {}, '場所'), h('dd', {}, [s.place, s.place && s.area ? '・' : '', s.area]));
+    if (s.address) facts.push(h('dt', {}, '住所'), h('dd', {}, s.address));
+    if (s.hours) facts.push(h('dt', {}, '営業'), h('dd', {}, s.hours));
+    if (s.category === 'limited' && (s.startDate || s.endDate)) {
+      facts.push(h('dt', {}, '期間'), h('dd', {}, `${s.startDate ? fullDate(s.startDate) : ''} 〜 ${s.endDate ? fullDate(s.endDate) : ''}`));
+    }
+    return h('article', {
+      class: 'spot' + (state.selected === s.id ? ' is-selected' : ''), id: 'spot-' + s.id,
+      'data-cat': s.category, 'data-state': s.state,
+    }, [
+      h('div', { class: 'spot-body' }, [
+        h('div', { class: 'spot-meta' }, [tag(s), statusChip(s), h('span', { class: 'where' }, s.pref)]),
+        h('h3', { class: 'spot-name' }, s.name),
+        s.nameLocal ? h('p', { class: 'spot-local', lang: langOf(s) }, s.nameLocal) : null,
+        facts.length ? h('dl', { class: 'facts' }, facts) : null,
+        s.highlights ? h('p', { class: 'highlights' }, s.highlights) : null,
+        h('div', { class: 'actions' }, [
+          s.xy
+            ? h('button', { type: 'button', class: 'act', onclick: () => select(s.id, { from: 'list' }) }, '地図で見る')
+            : h('span', { class: 'act is-off' }, '地図の位置は確認中'),
+          routeButton(s),
+          outLink(gmap(s), 'Googleマップ ↗'),
+          outLink(dirUrl([s], null, true), '行き方 ↗'),
+          s.url ? outLink(s.url, '情報元 ↗') : null,
+        ]),
+        s.checkedNote ? h('p', { class: 'note' }, `確認メモ：${s.checkedNote}`) : null,
+      ]),
+      stampButton(s),
+    ]);
+  }
+  function renderList() {
+    if (!visibleSpots.length) {
+      const none = !SPOTS.some(s => s.country === state.country);
+      list.replaceChildren(h('div', { class: 'empty' }, none
+        ? [h('p', {}, 'この国・地域のスポットはまだ登録されていません。')]
+        : [h('p', {}, '条件に合うスポットはありません。'), h('button', { type: 'button', class: 'act', onclick: resetFilters }, '条件をリセット')]));
+      return;
+    }
+    const groups = new Map(regionsFor(state.country).map(r => [r, []]));
+    visibleSpots.forEach(s => { if (!groups.has(s.region)) groups.set(s.region, []); groups.get(s.region).push(s); });
+    const out = [];
+    for (const [region, arr] of groups) {
+      if (!arr.length) continue;
+      arr.sort(cmp);
+      out.push(h('section', { class: 'group', 'aria-label': region }, [
+        h('h2', { class: 'group-title' }, [region, h('span', { class: 'group-n' }, `${arr.length}か所`)]),
+        arr.map(card),
+      ]));
+    }
+    list.replaceChildren(...out);
+  }
+  function renderResult() {
+    const c = COUNTRIES.find(c => c.code === state.country);
+    $('result').textContent = `${c.label}のスポット ${visibleSpots.length}か所`;
+    const ended = SPOTS.filter(s => s.country === state.country && s.state === 'ended').length;
+    const btn = $('endedToggle');
+    btn.hidden = ended === 0;
+    btn.textContent = state.showEnded ? '終了したイベントを隠す' : `終了したイベント ${ended}件も表示`;
+  }
+
+  /* ---------- stamps ---------- */
+  function renderStamps() {
+    const c = COUNTRIES.find(c => c.code === state.country);
+    const pool = SPOTS.filter(s => s.country === state.country && (s.state !== 'ended' || visited[s.id])).sort(cmp);
+    $('stamps').replaceChildren(...pool.map(s => h('li', { class: 'st' + (visited[s.id] ? ' is-on' : ''), title: s.name })));
+    $('visitedCount').textContent = pool.filter(s => visited[s.id]).length;
+    $('stampTotal').textContent = pool.length;
+    $('stampCountry').textContent = c.label;
+    const all = SPOTS.filter(s => s.state !== 'ended' || visited[s.id]);
+    const allOn = all.filter(s => visited[s.id]).length;
+    $('stampNote').textContent = `4つの国・地域ぜんぶで ${allOn} / ${all.length} か所。記録はこのブラウザだけに保存されます。`;
+  }
+  function toggleVisited(id) {
+    if (visited[id]) delete visited[id]; else visited[id] = TODAY;
+    store.set('chiikatsu:visited', visited);
+    update();
+    const btn = document.querySelector(`#spot-${CSS.escape(id)} .stamp`);
+    if (btn) {
+      btn.focus();
+      if (visited[id] && !reduceMotion) btn.classList.add('just-pressed');
+    }
+  }
+
+  /* ---------- map ---------- */
+  const svg = $('mapSvg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const layer = svgEl('g');
+  const under = svgEl('g', { 'aria-hidden': 'true' });
+  const top = svgEl('g', { 'aria-hidden': 'true' });
+  const prefPaths = {};
+  top.append(svgEl('path', { d: MAP.lands.bg, class: 'land-bg' }));
+  under.append(svgEl('path', { d: Object.values(MAP.japan).join(''), class: 'under', 'data-land': 'JP' }));
+  for (const [code, parts] of [['KR', ['KR']], ['TW', ['TW']], ['CN', ['CN', 'HK', 'MO']]]) {
+    under.append(svgEl('path', { d: parts.map(p => MAP.lands[p] || '').join(''), class: 'under', 'data-land': code }));
+    for (const p of parts) if (MAP.lands[p]) top.append(svgEl('path', { d: MAP.lands[p], class: 'land-t', 'data-land': p }));
+  }
+  for (const [name, d] of Object.entries(MAP.japan)) {
+    prefPaths[name] = svgEl('path', { d, class: 'pref' });
+    top.append(prefPaths[name]);
+  }
+  const labelG = svgEl('g', { 'aria-hidden': 'true' });
+  const pinG = svgEl('g');
+  layer.append(under, top, labelG, pinG);
+  svg.append(layer);
+
+  let T = { k: 1, x: 0, y: 0, toString() { return ''; } };
+  let lastK = 1;
+  let zoom = null;
+  let focusSelectedPin = false;
+
+  function pxPerUnit() {
+    const r = svg.getBoundingClientRect();
+    return r.width && r.height ? Math.max(r.width / W, r.height / H) : 0.5;
+  }
+  function countryView(code) {
+    const c = COUNTRIES.find(c => c.code === code);
+    const [x0, y1] = project(c.view[0], c.view[1]);
+    const [x1, y0] = project(c.view[2], c.view[3]);
+    const box = [x0, y0, x1, y1];
+    SPOTS.filter(s => s.country === code && s.xy).forEach(s => {
+      box[0] = Math.min(box[0], s.xy[0]); box[1] = Math.min(box[1], s.xy[1]);
+      box[2] = Math.max(box[2], s.xy[0]); box[3] = Math.max(box[3], s.xy[1]);
+    });
+    return box;
+  }
+  function viewTransform([x0, y0, x1, y1], pad = 0.06, minSpan = 0.6) {
+    if (!hasD3) return null;
+    const r = svg.getBoundingClientRect();
+    const s0 = pxPerUnit();
+    const visW = (r.width || 600) / s0, visH = (r.height || 600) / s0;
+    const bw = Math.max(x1 - x0, minSpan) * (1 + pad * 2);
+    const bh = Math.max(y1 - y0, minSpan) * (1 + pad * 2);
+    const k = Math.max(1, Math.min(KMAX, Math.min(visW / bw, visH / bh)));
+    const t = d3.zoomIdentity.translate(W / 2, H / 2).scale(k).translate(-(x0 + x1) / 2, -(y0 + y1) / 2);
+    return zoom.constrain()(t, [[0, 0], [W, H]], [[0, 0], [W, H]]);
+  }
+  function flyTo(t, instant) {
+    if (!t) return;
+    const sel = d3.select(svg);
+    if (instant || reduceMotion) sel.call(zoom.transform, t);
+    else sel.transition().duration(650).call(zoom.transform, t);
+  }
+  function fitSpots(spots) {
+    const pts = spots.filter(s => s.xy).map(s => s.xy);
+    if (!pts.length) return;
+    const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+    flyTo(viewTransform([Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)], 0.25, 1.5));
+  }
+
+  function cluster(items, radius) {
+    const out = [];
+    const used = new Set();
+    const pts = items.slice().sort((a, b) => a.xy[1] - b.xy[1]);
+    for (const p of pts) {
+      if (used.has(p)) continue;
+      used.add(p);
+      const members = [p];
+      for (const q of pts) {
+        if (used.has(q)) continue;
+        if (Math.hypot(q.xy[0] - p.xy[0], q.xy[1] - p.xy[1]) < radius) { members.push(q); used.add(q); }
+      }
+      out.push({ members, x: avg(members.map(m => m.xy[0])), y: avg(members.map(m => m.xy[1])) });
+    }
+    return out;
+  }
+  function pinNode(s, selected, inv) {
+    const g = svgEl('g', {
+      class: 'pin' + (selected ? ' is-selected' : ''), 'data-cat': s.category, 'data-id': s.id,
+      transform: `translate(${s.xy[0]},${s.xy[1]}) scale(${inv})`, tabindex: '0', role: 'button',
+      'aria-label': `${s.name}（${CATS[s.category].label}${visited[s.id] ? '・行った' : ''}）`,
+    });
+    g.append(svgEl('title', {}, s.name), svgEl('circle', { r: 18, class: 'hit' }));
+    if (selected) g.append(svgEl('circle', { r: 15, class: 'ring' }));
+    g.append(svgEl('circle', { r: selected ? 10 : 8, class: 'body' }));
+    g.append(visited[s.id]
+      ? svgEl('path', { d: 'M-3.6 0.2 L-1 2.8 L3.8 -2.4', class: 'tick' })
+      : svgEl('circle', { r: 2.4, cx: -2.6, cy: -2.8, class: 'shine' }));
+    if (selected) {
+      const name = s.name.length > 20 ? s.name.slice(0, 19) + '…' : s.name;
+      g.append(svgEl('text', { x: 16, y: 5, class: 'pin-label' }, name));
+    }
+    return g;
+  }
+  function clusterNode(c, inv) {
+    const n = c.members.length;
+    const g = svgEl('g', {
+      class: 'cluster', 'data-ids': c.members.map(m => m.id).join(','),
+      transform: `translate(${c.x},${c.y}) scale(${inv})`, tabindex: '0', role: 'button',
+      'aria-label': `このあたりのスポット ${n}か所`,
+    });
+    g.append(svgEl('circle', { r: 20, class: 'hit' }), svgEl('circle', { r: 15.5, class: 'disc' }));
+    let offset = 0;
+    for (const cat of CAT_ORDER) {
+      const cnt = c.members.filter(m => m.category === cat).length;
+      if (!cnt) continue;
+      const pct = cnt / n * 100;
+      g.append(svgEl('circle', {
+        r: 11.5, class: 'seg', 'data-cat': cat, pathLength: 100, transform: 'rotate(-90)',
+        'stroke-dasharray': `${pct} ${100 - pct}`, 'stroke-dashoffset': -offset,
+      }));
+      offset += pct;
+    }
+    g.append(svgEl('text', { y: 0.5 }, n));
+    return g;
+  }
+  function drawPins() {
+    const ppu = pxPerUnit() * T.k;
+    const inv = 1 / ppu;
+    labelG.replaceChildren(...CITIES
+      .filter(([, , , tier]) => tier === 1 || (tier === 2 && ppu >= 1.8) || (tier === 3 && ppu >= 3.5))
+      .map(([name, lon, lat]) => {
+        const [x, y] = project(lon, lat);
+        const g = svgEl('g', { class: 'city', transform: `translate(${x},${y}) scale(${inv})` });
+        g.append(svgEl('circle', { r: 2.4 }), svgEl('text', { x: 6, y: 4 }, name));
+        return g;
+      }));
+    const items = visibleSpots.filter(s => s.xy);
+    const sel = items.find(s => s.id === state.selected);
+    const nodes = cluster(items.filter(s => s !== sel), CLUSTER_PX * inv)
+      .map(c => c.members.length === 1 ? pinNode(c.members[0], false, inv) : clusterNode(c, inv));
+    if (sel) nodes.push(pinNode(sel, true, inv));
+    pinG.replaceChildren(...nodes);
+    if (focusSelectedPin) {
+      focusSelectedPin = false;
+      const p = pinG.querySelector('.pin.is-selected');
+      if (p) p.focus();
+    }
+  }
+  function renderPrefs() {
+    const hit = new Set(visibleSpots.filter(s => s.country === 'JP').map(s => s.pref));
+    for (const [name, p] of Object.entries(prefPaths)) p.classList.toggle('has-spots', hit.has(name));
+  }
+
+  function activate(node, viaKey) {
+    if (node.classList.contains('pin')) {
+      focusSelectedPin = viaKey;
+      select(node.dataset.id, { from: 'map' });
+      return;
+    }
+    const members = node.dataset.ids.split(',').map(id => byId[id]);
+    const xs = members.map(m => m.xy[0]), ys = members.map(m => m.xy[1]);
+    const span = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+    // same building or a few hundred metres apart: even full zoom keeps them stacked, so list them
+    const splittable = span * pxPerUnit() * KMAX > CLUSTER_PX * 1.5;
+    const t = splittable && viewTransform([Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)], 0.35, 0.05);
+    if (t && t.k > T.k * 1.3) { closePopup(); flyTo(t); }
+    else showClusterPopup(members);
+  }
+  pinG.addEventListener('click', e => {
+    const node = e.target.closest('.pin, .cluster');
+    if (node) activate(node, false);
+  });
+  pinG.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const node = e.target.closest('.pin, .cluster');
+    if (node) { e.preventDefault(); activate(node, true); }
+  });
+
+  /* ---------- popup + selection ---------- */
+  const popup = $('popup');
+  function closeButton() {
+    return h('button', { type: 'button', class: 'popup-close', 'aria-label': '閉じる', onclick: closePopup }, '×');
+  }
+  function showSpotPopup(s) {
+    popup.replaceChildren(
+      closeButton(),
+      h('div', { class: 'spot-meta' }, [tag(s), statusChip(s)]),
+      h('p', { class: 'popup-name' }, s.name),
+      h('p', { class: 'popup-sub' }, [s.place, s.place && s.area ? '・' : '', s.area]),
+      s.hours ? h('p', { class: 'popup-sub' }, s.hours) : null,
+      h('div', { class: 'actions' }, [
+        h('button', { type: 'button', class: 'act', onclick: () => scrollToCard(s.id) }, '一覧で見る'),
+        routeButton(s),
+        outLink(gmap(s), 'Googleマップ ↗'),
+        outLink(dirUrl([s], null, true), '行き方 ↗'),
+      ]),
+    );
+    popup.hidden = false;
+  }
+  function showClusterPopup(members) {
+    popup.replaceChildren(
+      closeButton(),
+      h('p', { class: 'popup-name' }, `このあたりのスポット（${members.length}か所）`),
+      h('ul', { class: 'popup-list' }, members.sort(cmp).map(m => h('li', {}, h('button', {
+        type: 'button', 'data-cat': m.category, onclick: () => select(m.id, { from: 'cluster' }),
+      }, [h('span', { class: 'dot', 'aria-hidden': 'true' }), m.name])))),
+    );
+    popup.hidden = false;
+  }
+  function closePopup() {
+    popup.hidden = true;
+    if (state.selected) {
+      state.selected = null;
+      markCard();
+      drawPins();
+    }
+  }
+  function markCard() {
+    list.querySelectorAll('.spot.is-selected').forEach(el => el.classList.remove('is-selected'));
+    if (state.selected) {
+      const el = $('spot-' + state.selected);
+      if (el) el.classList.add('is-selected');
+    }
+  }
+  function scrollToCard(id) {
+    const el = $('spot-' + id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  }
+  function select(id, { from, instant } = {}) {
+    const s = byId[id];
+    if (!s) return;
+    state.selected = id;
+    markCard();
+    if (s.xy) showSpotPopup(s);
+    drawPins();
+    if (from === 'list' && s.xy && hasD3) {
+      const k = Math.max(T.k, Math.min(KMAX, 26 / pxPerUnit()));
+      const t = d3.zoomIdentity.translate(W / 2, H / 2).scale(k).translate(-s.xy[0], -s.xy[1]);
+      flyTo(zoom.constrain()(t, [[0, 0], [W, H]], [[0, 0], [W, H]]), instant);
+      if (window.matchMedia('(max-width: 899px)').matches) {
+        $('mapPanel').scrollIntoView({ behavior: reduceMotion || instant ? 'auto' : 'smooth', block: 'start' });
+      }
+    }
+    try { history.replaceState(null, '', '#' + id); } catch (e) { /* not allowed in this frame */ }
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !popup.hidden) closePopup(); });
+
+  /* ---------- zoom ---------- */
+  if (hasD3) {
+    zoom = d3.zoom()
+      .scaleExtent([1, KMAX])
+      .translateExtent([[0, 0], [W, H]])
+      .on('zoom', ev => {
+        T = ev.transform;
+        layer.setAttribute('transform', T.toString());
+        if (Math.abs(T.k - lastK) > 1e-6) { lastK = T.k; drawPins(); }
+      });
+    d3.select(svg).call(zoom).on('dblclick.zoom', null);
+    $('zoomIn').addEventListener('click', () => d3.select(svg).transition().duration(reduceMotion ? 0 : 300).call(zoom.scaleBy, 1.8));
+    $('zoomOut').addEventListener('click', () => d3.select(svg).transition().duration(reduceMotion ? 0 : 300).call(zoom.scaleBy, 1 / 1.8));
+    $('zoomReset').addEventListener('click', () => flyTo(viewTransform(countryView(state.country))));
+  } else {
+    document.querySelector('.map-tools').hidden = true;
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(() => drawPins()).observe(svg);
+
+  /* ---------- toast ---------- */
+  let toastTimer;
+  function toast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { t.hidden = true; }, 3200);
+  }
+
+  /* ---------- route (Google Maps directions) ---------- */
+  const ROUTE_MAX = 10; // Google Maps takes a destination plus up to 9 waypoints
+  let route = store.get('chiikatsu:route', []);
+  route = Array.isArray(route) ? route.filter(id => byId[id]) : [];
+  let routeMode = store.get('chiikatsu:routeMode', 'walking');
+  if (routeMode !== 'walking' && routeMode !== 'driving') routeMode = 'walking';
+  let routeFromHere = store.get('chiikatsu:routeFromHere', false) === true;
+  let routeOpen = false;
+
+  function routeButton(s) {
+    const on = route.includes(s.id);
+    return h('button', {
+      type: 'button', class: 'act', 'data-route': s.id, 'aria-pressed': String(on),
+      onclick: () => toggleRoute(s.id),
+    }, on ? 'ルートから外す' : 'ルートに追加');
+  }
+  function syncRouteButtons() {
+    document.querySelectorAll('[data-route]').forEach(b => {
+      const on = route.includes(b.dataset.route);
+      b.setAttribute('aria-pressed', String(on));
+      b.textContent = on ? 'ルートから外す' : 'ルートに追加';
+    });
+  }
+  function saveRoute() {
+    store.set('chiikatsu:route', route);
+    renderRoute();
+    syncRouteButtons();
+  }
+  function toggleRoute(id) {
+    const i = route.indexOf(id);
+    if (i >= 0) route.splice(i, 1);
+    else if (route.length >= ROUTE_MAX) { toast(`ルートに入れられるのは${ROUTE_MAX}か所までです`); return; }
+    else { route.push(id); toast(`ルートに追加しました（${route.length}か所）`); }
+    saveRoute();
+  }
+  function moveStop(i, d) {
+    [route[i], route[i + d]] = [route[i + d], route[i]];
+    saveRoute();
+  }
+  // nearest-neighbour from the first stop; good enough for a day out in one city
+  function sortRoute() {
+    const placed = route.filter(id => byId[id].xy);
+    const rest = route.filter(id => !byId[id].xy);
+    if (placed.length < 3) return;
+    const out = [placed.shift()];
+    while (placed.length) {
+      const [lx, ly] = byId[out[out.length - 1]].xy;
+      let best = 0, bestD = Infinity;
+      placed.forEach((id, i) => {
+        const [x, y] = byId[id].xy;
+        const d = Math.hypot(x - lx, y - ly);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      out.push(placed.splice(best, 1)[0]);
+    }
+    route = out.concat(rest);
+    saveRoute();
+    toast('近い順に並べました');
+  }
+  function renderRoute() {
+    const box = $('route');
+    document.body.classList.toggle('has-route', route.length > 0);
+    if (!route.length) { box.hidden = true; return; }
+    box.hidden = false;
+    const stops = route.map(id => byId[id]);
+    const parts = [h('div', { class: 'route-head' }, [
+      h('h2', { class: 'route-title' }, 'ちい活ルート'),
+      h('span', { class: 'route-count' }, `${stops.length}か所`),
+      h('span', { class: 'spacer' }),
+      h('button', {
+        type: 'button', class: 'act', 'aria-expanded': String(routeOpen),
+        onclick: () => { routeOpen = !routeOpen; renderRoute(); },
+      }, routeOpen ? 'たたむ' : '順番を見る'),
+      h('a', { class: 'act primary', href: dirUrl(stops, routeMode, routeFromHere), target: '_blank', rel: 'noopener' }, 'Googleマップで開く ↗'),
+    ])];
+    if (routeOpen) {
+      const items = [];
+      stops.forEach((s, i) => {
+        if (i > 0) {
+          items.push(h('li', { class: 'route-leg' },
+            h('a', { href: dirUrl([stops[i - 1], s], 'transit', false), target: '_blank', rel: 'noopener' }, '電車での行き方 ↗')));
+        }
+        items.push(h('li', { class: 'route-stop', 'data-cat': s.category }, [
+          h('span', { class: 'route-num', 'aria-hidden': 'true' }, i + 1),
+          h('span', { class: 'route-name' }, [s.name, h('small', {}, [s.pref, s.area ? `・${s.area}` : ''])]),
+          h('span', { class: 'route-ops' }, [
+            h('button', { type: 'button', class: 'icon-btn', 'aria-label': `${s.name}を前へ`, disabled: i === 0, onclick: () => moveStop(i, -1) }, '↑'),
+            h('button', { type: 'button', class: 'icon-btn', 'aria-label': `${s.name}を後ろへ`, disabled: i === stops.length - 1, onclick: () => moveStop(i, 1) }, '↓'),
+            h('button', { type: 'button', class: 'icon-btn', 'aria-label': `${s.name}をルートから外す`, onclick: () => toggleRoute(s.id) }, '×'),
+          ]),
+        ]));
+      });
+      parts.push(h('ol', { class: 'route-stops' }, items));
+      parts.push(h('div', { class: 'route-foot' }, [
+        h('div', { class: 'seg', role: 'group', 'aria-label': '移動手段' }, [['walking', '歩き'], ['driving', '車']].map(([m, label]) =>
+          h('button', {
+            type: 'button', 'aria-pressed': String(routeMode === m),
+            onclick: () => { routeMode = m; store.set('chiikatsu:routeMode', m); renderRoute(); },
+          }, label))),
+        h('label', { class: 'toggle' }, [
+          h('input', {
+            type: 'checkbox', id: 'routeFromHere', checked: routeFromHere,
+            onchange: e => { routeFromHere = e.target.checked; store.set('chiikatsu:routeFromHere', routeFromHere); renderRoute(); },
+          }),
+          h('span', {}, '現在地から出発'),
+        ]),
+        h('button', { type: 'button', class: 'act', onclick: sortRoute }, '近い順に並べる'),
+        h('button', { type: 'button', class: 'act', onclick: () => { route = []; saveRoute(); } }, 'ぜんぶ外す'),
+        h('p', { class: 'route-note' }, 'まとめて開くルートは歩き・車向けです。電車で回るときは、区間ごとの「電車での行き方」を使ってください。スマホのブラウザで開くと、経由地が3か所までになることがあります（Googleマップアプリなら9か所まで）。'),
+      ]));
+    }
+    box.replaceChildren(...parts);
+  }
+
+  /* ---------- Google My Maps export (CSV) ---------- */
+  function csvCell(v) {
+    const s = v == null ? '' : String(v);
+    return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  }
+  function spotsCsv(spots) {
+    const head = ['名前', '種類', '国・地域', '緯度', '経度', '住所', '場所', '営業時間', '期間', 'ポイント', '情報元'];
+    const rows = spots.map(s => [
+      s.name, CATS[s.category].label, COUNTRIES.find(c => c.code === s.country).label, s.lat, s.lng, s.address,
+      [s.place, s.area].filter(Boolean).join('・'), s.hours,
+      s.startDate || s.endDate ? `${s.startDate || ''}〜${s.endDate || ''}` : '', s.highlights, s.url,
+    ]);
+    // BOM so spreadsheet apps read the Japanese text as UTF-8
+    return '﻿' + [head, ...rows].map(r => r.map(csvCell).join(',')).join('\r\n') + '\r\n';
+  }
+  async function saveCsv() {
+    const spots = visibleSpots.filter(s => typeof s.lat === 'number');
+    if (!spots.length) { toast('保存できるスポットがありません'); return; }
+    const filename = `chiikatsu-map-${state.country.toLowerCase()}-${TODAY}.csv`;
+    const data = spotsCsv(spots);
+    if (window.claude && typeof window.claude.use === 'function') {
+      const downloads = await window.claude.use('downloads');
+      if (!downloads) { toast('この画面では保存できません。公開サイトから保存してください'); return; }
+      try {
+        await downloads.save({ filename, data });
+        toast(`${spots.length}か所を保存しました`);
+      } catch (e) {
+        if (!e || e.code !== 'declined') toast('保存できませんでした');
+      }
+      return;
+    }
+    const url = URL.createObjectURL(new Blob([data], { type: 'text/csv;charset=utf-8' }));
+    const a = h('a', { href: url, download: filename });
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    toast(`${spots.length}か所を保存しました`);
+  }
+  $('saveCsv').addEventListener('click', saveCsv);
+
+  /* ---------- update cycle ---------- */
+  function update() {
+    visibleSpots = SPOTS.filter(s => matches(s));
+    if (state.selected && !visibleSpots.some(s => s.id === state.selected)) {
+      state.selected = null;
+      popup.hidden = true;
+    }
+    renderChips();
+    renderList();
+    renderResult();
+    renderPrefs();
+    renderStamps();
+    drawPins();
+    const placed = visibleSpots.filter(s => typeof s.lat === 'number').length;
+    $('saveCsv').textContent = `表示中の${placed}か所を保存（マイマップ用）`;
+  }
+  function setCountry(code, opts = {}) {
+    state.country = code;
+    state.cat = 'all';
+    state.region = 'all';
+    state.selected = null;
+    popup.hidden = true;
+    svg.dataset.country = code;
+    store.set('chiikatsu:country', code);
+    renderTabs();
+    renderRegionSelect();
+    update();
+    if (hasD3) flyTo(viewTransform(countryView(code)), opts.instant);
+  }
+
+  const savedCountry = store.get('chiikatsu:country', 'JP');
+  const linked = byId[decodeURIComponent(location.hash.slice(1))];
+  state.country = linked ? linked.country : (COUNTRIES.some(c => c.code === savedCountry) ? savedCountry : 'JP');
+  if (linked && linked.state === 'ended') state.showEnded = true;
+  setCountry(state.country, { instant: true });
+  renderRoute();
+  if (linked) select(linked.id, { from: 'list', instant: true });
+})();
+</script>
